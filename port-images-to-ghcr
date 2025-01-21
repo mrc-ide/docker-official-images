@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -ex
 
+# add more images here
 declare -a docker_images=(
     "redis:6"
     "redis:5"
@@ -8,7 +9,14 @@ declare -a docker_images=(
 
 for image in "${docker_images[@]}"
 do
-    docker pull "$image"
-    docker image tag "$image" ghcr.io/mrc-ide/docker-official-images/"$image"
-    docker image push ghcr.io/mrc-ide/docker-official-images/"$image"
+    docker manifest inspect ghcr.io/mrc-ide/docker-official-images/"$image" > /dev/null 2>&1
+    exit_code=$?
+
+    if [ $exit_code -eq 0 ]; then
+        echo "Not porting over $image because it already exists in the GHCR"
+    else
+        docker pull "$image"
+        docker image tag "$image" ghcr.io/mrc-ide/docker-official-images/"$image"
+        docker image push ghcr.io/mrc-ide/docker-official-images/"$image"
+    fi
 done
