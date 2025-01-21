@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -ex
 
 # add more images here
 declare -a docker_images=(
