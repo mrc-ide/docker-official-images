@@ -5,6 +5,7 @@ declare -a docker_images=(
     "redis:6"
     "redis:5"
     "openjdk:11"
+    "openjdk:18"
 )
 
 for image in "${docker_images[@]}"
