@@ -1,0 +1,22 @@
+on:
+  push:
+    branches:
+      - main
+
+name: Port docker official images to GHCR
+
+jobs:
+  port-images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to GHCR (GitHub Packages)
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull from Docker Hub, push to GHCR
+        run: ./port-images-to-ghcr

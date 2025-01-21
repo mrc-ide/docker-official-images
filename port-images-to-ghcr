@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -ex
+
+declare -a docker_images=(
+    "redis:6"
+    "redis:5"
+)
+
+for image in "${docker_images[@]}"
+do
+    docker pull "$image"
+    docker image tag "$image" ghcr.io/mrc-ide/docker-official-images/"$image"
+    docker image push ghcr.io/mrc-ide/docker-official-images/"$image"
+done
